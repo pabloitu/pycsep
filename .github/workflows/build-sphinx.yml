@@ -1,8 +1,8 @@
-name: Build sphinx documentation
+name: docs
 
 on:
   push:
-    branches: [dev]
+    branches: [ master ]
 
 jobs:
   build_docs:
