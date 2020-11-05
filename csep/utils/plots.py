@@ -574,16 +574,21 @@ def plot_spatial_dataset(gridded, region, show=False, plot_args=None):
     clabel = plot_args.get('clabel', '')
     filename = plot_args.get('filename', None)
     cmap = plot_args.get('cmap', None)
+    projection = plot_args.get('projection', ccrs.PlateCarree())
+
 
     fig = pyplot.figure(figsize=figsize)
-    ax = fig.add_subplot(111, projection=ccrs.PlateCarree())
+    ax = fig.add_subplot(111, projection=projection)
 
     lons, lats = numpy.meshgrid(region.xs, region.ys)
-    im = ax.pcolormesh(lons, lats, gridded, cmap=cmap)
+    im = ax.pcolormesh(lons, lats, gridded, cmap=cmap, transform=ccrs.PlateCarree())
     ax.set_extent(extent)
     try:
-        ax.coastlines(color='black', resolution='110m', linewidth=1)
-        ax.add_feature(cartopy.feature.STATES)
+        from cartopy.io import img_tiles
+        # a = img_tiles.Stamen(style='terrain-background')
+        # ax.add_image(a, 6)
+        # ax.coastlines(color='black', resolution='10m', linewidth=1)
+        # ax.add_feature(cartopy.feature.BORDERS)
     except:
         print("Unable to plot coastlines or state boundaries. This might be due to no internet access, try pre-downloading the files.")
     im.set_clim(clim)
@@ -963,18 +968,40 @@ def plot_comparison_test(results, plot_args=None):
     title = plot_args.get('title', 'CSEP1 Consistency Test')
     xlabel = plot_args.get('xlabel', 'X')
     ylabel = plot_args.get('ylabel', 'Y')
+    figsize = plot_args.get('figsize', (8,6))
 
-    fig, ax = pyplot.subplots()
+    fig, ax = pyplot.subplots(figsize=figsize)
     ax.axhline(y=0, linestyle='--', color='black')
+
+    ylims = []
     for index, result in enumerate(results):
         ylow = result.observed_statistic - result.test_distribution[0]
         yhigh = result.test_distribution[1] - result.observed_statistic
-        ax.errorbar(index, result.observed_statistic, yerr=numpy.array([[ylow, yhigh]]).T, color='black', capsize=4)
-        ax.plot(index, result.observed_statistic, 'ok')
-    ax.set_xticklabels([res.sim_name[0] for res in results])
+        if result.observed_statistic > 0:
+            c = 'green'
+        elif result.observed_statistic < 0:
+            c = 'red'
+        else:
+            c = 'black'
+
+
+        if not numpy.isinf(result.observed_statistic):
+            ax.errorbar(index, result.observed_statistic, yerr=numpy.array([[ylow, yhigh]]).T, color=c, capsize=2,
+                        linewidth=0.5)
+            ax.plot(index, result.observed_statistic, marker ='o', color=c)
+            ylims.append((result.observed_statistic - ylow, result.observed_statistic+ yhigh))
+        else:
+            ax.bar(index, 200, bottom=-100,
+                    width=1, color=['red'], alpha=0.5)
+
+
+    ax.set_ylim(*_get_axis_limits(ylims))
+    ax.set_xticklabels([res.sim_name[0] for res in results], rotation='vertical')
     ax.set_xticks(numpy.arange(len(results)))
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
+    from matplotlib.ticker import MaxNLocator
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_title(title)
     fig.tight_layout()
     return ax
@@ -1004,13 +1031,17 @@ def plot_poisson_consistency_test(eval_results, normalize=False, one_sided_lower
     except TypeError:
         results = [eval_results]
 
-    fig, ax = pyplot.subplots()
-    # parse plot arguments, more can be added here
     if plot_args is None:
         plot_args = {}
 
     title = plot_args.get('title', results[0].name)
     xlabel = plot_args.get('xlabel', 'X')
+    figsize = plot_args.get('figsize', (12,8))
+
+    print(figsize)
+    fig, ax = pyplot.subplots(figsize=figsize)
+    # parse plot arguments, more can be added here
+
     xlims = []
     for index, res in enumerate(results):
         # handle analytical distributions first, they are all in the form ['name', parameters].
@@ -1034,19 +1065,25 @@ def plot_poisson_consistency_test(eval_results, normalize=False, one_sided_lower
                 plow = numpy.percentile(test_distribution, 2.5)
                 phigh = numpy.percentile(test_distribution, 97.5)
 
-        low = observed_statistic - plow
-        high = phigh - observed_statistic
-        ax.errorbar(observed_statistic, index, xerr=numpy.array([[low, high]]).T, fmt=_get_marker_style(observed_statistic, (plow, phigh)), capsize=4,
+
+
+        if not numpy.isinf(observed_statistic):
+            low = observed_statistic - plow
+            high = phigh - observed_statistic
+            ax.errorbar(observed_statistic, index, xerr=numpy.array([[low, high]]).T, fmt=_get_marker_style(observed_statistic, (plow, phigh)), capsize=4,
                     ecolor='black')
-        # determine the limits to use
-        xlims.append((plow, phigh, observed_statistic))
-        # we want to only extent the distribution where it falls outside of it in the acceptable tail
-        if one_sided_lower:
-            if observed_statistic >= plow and phigh < observed_statistic:
-                # draw dashed line to infinity
-                xt = numpy.linspace(phigh, 99999, 100)
-                yt = numpy.ones(100) * index
-                ax.plot(xt, yt, '--k')
+            # determine the limits to use
+            xlims.append((plow, phigh, observed_statistic))
+            # we want to only extent the distribution where it falls outside of it in the acceptable tail
+            if one_sided_lower:
+                if observed_statistic >= plow and phigh < observed_statistic:
+                    # draw dashed line to infinity
+                    xt = numpy.linspace(phigh, 99999, 100)
+                    yt = numpy.ones(100) * index
+                    ax.plot(xt, yt, '--k')
+        else:
+            ax.barh(index, 9999, left=-10000,
+                    height=1, color=['red'], alpha=0.5)
     ax.set_xlim(*_get_axis_limits(xlims))
     ax.set_yticklabels([res.sim_name for res in results])
     ax.set_yticks(numpy.arange(len(results)))
