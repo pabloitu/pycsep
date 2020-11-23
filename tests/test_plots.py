@@ -22,8 +22,8 @@ def random_region(n):
         ys = numpy.arange(y_1, y_2, dh)
 
         bbox = [min(xs), max(xs), min(ys), max(ys)]
-        if   10 < ys.shape[0] < 1000 and max(ys) + dh < 90 \
-                and max(xs) + dh < 180:
+        if  10 < ys.shape[0] < 500  and 10 < xs.shape[0] < 500\
+                and max(ys) + dh < 90 and max(xs) + dh < 180:
             break
         n_iter += 1
     return (xs, ys, dh, bbox)
@@ -89,6 +89,8 @@ class TestPoissonPlots(unittest.TestCase):
                         [i.sim_name for i in Stests])
         self.assertEqual(matplotlib.pyplot.gca().get_title(), Stests[0].name)
 
+
+class TestSpatialPlot(unittest.TestCase):
     def test_SpatialDataset(self, show=False):
         # Get random region between x in [-180,180] and y in [-90, 90]
         xs, ys, dh, bbox = random_region(numpy.random.randint(10,50))
@@ -104,7 +106,7 @@ class TestPoissonPlots(unittest.TestCase):
         gridded = numpy.random.random((ys.shape[0], xs.shape[0]))
         # Call func
         ax = plots.plot_spatial_dataset(gridded, region, show=show_flag,
-                                        plot_args={'grid': True, 'coastline':True})
+                                        plot_args={'grid': False, 'coastline':True})
         # Assert extent of the plot
         for i,j in zip(ax.get_xbound(), bbox[:2]):
             self.assertAlmostEqual(i, j)
