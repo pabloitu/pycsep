@@ -570,7 +570,7 @@ def plot_spatial_dataset(gridded, region, show=False, extent=None, set_global=Fa
                    - projection (cartopy.crs.Projection): default - cartopy.crs.PlateCarree()
                    - grid (bool): default True
                    - grid_labels (bool): default True
-                   - basemap (str): ('stock_img 'stamen_terrain', 'stamen_terrain-background', 'google-satellite', 'ESRI_terrain',
+                   - basemap (str): ('stock_img 'stamen_terrain', 'stamen_terrain-background', 'google-satellite',
                                     'ESRI_imagery', 'ESRI_relief', 'ESRI_topo', 'ESRI_terrain'). default - None
                    - coastline (bool): Flag to plot coastline. default - True,
                    - borders (bool): Flag to plot country borders. default - False,
@@ -616,10 +616,11 @@ def plot_spatial_dataset(gridded, region, show=False, extent=None, set_global=Fa
 
     # Instantiage GeoAxes object
     fig = pyplot.figure(figsize=figsize)
-    ax = fig.add_subplot(111, projection=projection)
     if set_global:
+        ax = fig.add_subplot(111, projection=projection)
         ax.set_global()
     else:
+        ax = fig.add_subplot(111, projection=projection, extent=extent)
         ax.set_extent(extent, crs=ccrs.PlateCarree())  # Defined extent always in lat/lon
 
     # Basemap plotting
@@ -674,7 +675,7 @@ def plot_spatial_dataset(gridded, region, show=False, extent=None, set_global=Fa
         gl.right_labels = False
         gl.xformatter = LONGITUDE_FORMATTER
         gl.yformatter = LATITUDE_FORMATTER
-    ax.set_title(title, y=1.02)
+    ax.set_title(title, y=1.06)
 
     if filename is not None:
         fig.savefig(filename + '.pdf')

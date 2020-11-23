@@ -76,7 +76,7 @@ class TestPoissonPlots(unittest.TestCase):
             Stest_result = mock.Mock() # Mock class with random attributes
             Stest_result.name = 'Mock STest'
             Stest_result.sim_name = ''.join(random.choice(string.ascii_letters) for _ in range(8))
-            Stest_result.test_distribution = numpy.random.uniform(-1000, 0, numpy.random.randint(500)).tolist()
+            Stest_result.test_distribution = numpy.random.uniform(-1000, 0, numpy.random.randint(3,500)).tolist()
             Stest_result.observed_statistic = numpy.random.uniform(-1000, 0) #random observed statistic
             if numpy.random.random() <0.02: # sim possible infinite values
                 Stest_result.observed_statistic = -numpy.inf
@@ -91,7 +91,7 @@ class TestPoissonPlots(unittest.TestCase):
 
 
 class TestSpatialPlot(unittest.TestCase):
-    def test_SpatialDataset(self, show=False):
+    def test_SpatialDataset(self):
         # Get random region between x in [-180,180] and y in [-90, 90]
         xs, ys, dh, bbox = random_region(numpy.random.randint(10,50))
         # Create mock class and methods
@@ -106,7 +106,7 @@ class TestSpatialPlot(unittest.TestCase):
         gridded = numpy.random.random((ys.shape[0], xs.shape[0]))
         # Call func
         ax = plots.plot_spatial_dataset(gridded, region, show=show_flag,
-                                        plot_args={'grid': False, 'coastline':True})
+                                        plot_args={'grid': True, 'coastline':True})
         # Assert extent of the plot
         for i,j in zip(ax.get_xbound(), bbox[:2]):
             self.assertAlmostEqual(i, j)
@@ -118,4 +118,7 @@ class TestSpatialPlot(unittest.TestCase):
 
 
 if __name__ == '__main__':
+
+    # A = TestSpatialPlot()
+    # A.test_SpatialDataset()
     unittest.main()
