@@ -14,6 +14,7 @@ Overview:
     4. Apply catalog-based number test to catalog
     5. Visualize results for catalog-based forecast
 """
+import json
 
 ####################################################################################################################################
 # Load required libraries
@@ -106,6 +107,24 @@ comcat_catalog.plot()
 # We can perform the Number test on the catalog based forecast using the observed catalog we obtained from Comcat.
 
 number_test_result = catalog_evaluations.number_test(forecast, comcat_catalog)
+number_test_result.to_dict()
+with open('catalog_n_test.json', 'w') as fp:
+    json.dump(number_test_result.to_dict(), fp, indent=4)
+
+spatial_test_result = catalog_evaluations.spatial_test(forecast, comcat_catalog)
+spatial_test_result.to_dict()
+with open('catalog_s_test.json', 'w') as fp:
+    json.dump(spatial_test_result.to_dict(), fp, indent=4)
+
+magnitude_test_result = catalog_evaluations.magnitude_test(forecast, comcat_catalog)
+magnitude_test_result.to_dict()
+with open('catalog_m_test.json', 'w') as fp:
+    json.dump(magnitude_test_result.to_dict(), fp, indent=4)
+
+pseudolikelihood_test_result = catalog_evaluations.pseudolikelihood_test(forecast, comcat_catalog)
+pseudolikelihood_test_result.to_dict()
+with open('catalog_l_test.json', 'w') as fp:
+    json.dump(pseudolikelihood_test_result.to_dict(), fp, indent=4)
 
 ####################################################################################################################################
 # Plot number test result
@@ -114,3 +133,6 @@ number_test_result = catalog_evaluations.number_test(forecast, comcat_catalog)
 # We can create a simple visualization of the number test from the evaluation result class.
 
 ax = number_test_result.plot(show=True)
+ax = spatial_test_result.plot(show=True)
+ax = magnitude_test_result.plot(show=True)
+ax = pseudolikelihood_test_result.plot(show=True)
