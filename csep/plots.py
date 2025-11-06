@@ -700,7 +700,7 @@ def plot_catalog(
 ) -> matplotlib.axes.Axes:
     """
     Spatial plot of catalog epicenters. Can be plotted over a basemap if desired by passing the
-    keyword parameters of the function :func:`~csep.utils.plots.plot_basemap`. The size of the
+    keyword parameters of the function :func:`~csep.plots.plot_basemap`. The size of the
     events is automatically scaled according to their magnitude. Fine-tuning of an exponential
     sizing function can be set with the parameters ``size``, ``max_size``, ``power``,
     ``min_val`` and ``max_val``.
@@ -713,7 +713,7 @@ def plot_catalog(
 
     Args:
         catalog (CSEPCatalog): Catalog object to be plotted.
-        basemap (str, optional): Passed to :func:`~csep.utils.plots.plot_basemap` along with
+        basemap (str, optional): Passed to :func:`~csep.plots.plot_basemap` along with
             `kwargs`. Possible values are: `'stock_img'`, `'google-satellite'`,
             `'ESRI_terrain'`, `'ESRI_imagery'`, `'ESRI_relief'`, `'ESRI_topo'`, a custom web
             service link, or a GeoTiff filepath. Defaults to `None`.
@@ -876,7 +876,7 @@ def plot_gridded_dataset(
     """
     Plot spatial gridded dataset such as data from a gridded forecast. Can be plotted over a
     basemap by passing the keyword parameters of the function
-    :func:`~csep.utils.plots.plot_basemap`. The color-map can be fine-tuned using the arguments
+    :func:`~csep.plots.plot_basemap`. The color-map can be fine-tuned using the arguments
     ``colorbar``, ``colormap``, ``clim``. An exponential transparency function can be set
     with ``alpha`` and ``alpha_exp``.
 
@@ -894,7 +894,7 @@ def plot_gridded_dataset(
             :meth:`~csep.core.regions.CartesianGrid2D.get_cartesian` to convert a 1D array
             (whose indices correspond to each spatial cell) to a 2D-square array.
         region (CartesianGrid2D): Region in which gridded values are contained.
-        basemap (str, optional): Passed to :func:`~csep.utils.plots.plot_basemap` along with
+        basemap (str, optional): Passed to :func:`~csep.plots.plot_basemap` along with
             `kwargs`. Possible values are: `'stock_img'`, `'google-satellite'`,
             `'ESRI_terrain'`, `'ESRI_imagery'`, `'ESRI_relief'`, `'ESRI_topo'`, a custom web
             service link, or a GeoTiff filepath. Defaults to `None`.
@@ -2677,10 +2677,10 @@ def _warning_plot_args(func_name: str):
     Issues a standardized DeprecationWarning for use of 'plot_args' in plotting functions.
 
     Args:
-        func_name (str): The full function name (e.g., 'csep.utils.plots.plot_catalog').
+        func_name (str): The full function name (e.g., 'csep.plots.plot_catalog').
     """
     base_url = "https://docs.cseptesting.org/reference/generated/"
-    doc_url = f"{base_url}/csep.utils.plots.{func_name}.html"
+    doc_url = f"{base_url}/csep.plots.{func_name}.html"
 
     warnings.warn(
         f"'plot_args' usage is deprecated and will be removed in version 1.0.\n"
