@@ -23,7 +23,7 @@ from csep.utils.constants import CSEP_MW_BINS
 from csep.utils.log import LoggingMixin
 from csep.utils.readers import csep_ascii
 from csep.utils.file import get_file_extension
-from csep.utils.plots import plot_catalog, plot_magnitude_versus_time
+from csep.plots import plot_catalog, plot_magnitude_versus_time
 
 
 class AbstractBaseCatalog(LoggingMixin):

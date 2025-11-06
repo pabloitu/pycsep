@@ -231,8 +231,8 @@ Region utilities:
     masked_region
     generate_aftershock_region
 
-.. currentmodule:: csep.utils.plots
-.. automodule:: csep.utils.plots
+.. currentmodule:: csep.plots
+.. automodule:: csep.plots
 
 .. _api-plot-functions:
 

@@ -6,7 +6,7 @@ import numpy as np
 import pyproj
 
 from csep.utils.time_utils import datetime_to_utc_epoch, epoch_time_to_utc_datetime
-from csep.utils import plots
+from csep import plots
 
 
 class Simulation:

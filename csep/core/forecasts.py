@@ -13,7 +13,7 @@ from csep.utils.calc import bin1d_vec
 from csep.utils.time_utils import decimal_year, datetime_to_utc_epoch
 from csep.core.catalogs import AbstractBaseCatalog
 from csep.utils.constants import SECONDS_PER_ASTRONOMICAL_YEAR
-from csep.utils.plots import plot_gridded_dataset
+from csep.plots import plot_gridded_dataset
 
 
 # idea: should this be a SpatialDataSet and the class below SpaceMagnitudeDataSet, bc of functions like

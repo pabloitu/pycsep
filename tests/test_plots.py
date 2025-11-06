@@ -24,7 +24,7 @@ from csep.core.catalog_evaluations import (
     CatalogPseudolikelihoodTestResult,
     CalibrationTestResult,
 )
-from csep.utils.plots import (
+from csep.plots import (
     plot_cumulative_events_versus_time,
     plot_magnitude_versus_time,
     plot_test_distribution,
@@ -705,7 +705,7 @@ class TestPlotBasemap(TestPlots):
     def setUp(self):
         self.chiloe_extent = [-75, -71, -44, -40]
 
-    @patch("csep.utils.plots._get_basemap")
+    @patch("csep.plots._get_basemap")
     def test_plot_basemap_default(self, mock_get_basemap):
 
         mock_tiles = MagicMock()
@@ -714,7 +714,7 @@ class TestPlotBasemap(TestPlots):
         self.assertIsInstance(ax, plt.Axes)
         mock_get_basemap.assert_not_called()
 
-    @patch("csep.utils.plots._get_basemap")
+    @patch("csep.plots._get_basemap")
     def test_plot_basemap_with_features(self, mock_get_basemap):
         mock_tiles = MagicMock()
         mock_get_basemap.return_value = mock_tiles
@@ -766,7 +766,7 @@ class TestPlotBasemap(TestPlots):
         self.assertIsInstance(ax, plt.Axes)
         self.assertTrue(ax.get_legend() is None)
 
-    @patch("csep.utils.plots._get_basemap")
+    @patch("csep.plots._get_basemap")
     def test_plot_basemap_set_global(self, mock_get_basemap):
         # Mock the _get_basemap function
         mock_tiles = MagicMock()
@@ -1273,7 +1273,7 @@ class TestHelperFunctions(TestPlots):
         gl = ax.gridlines()
         self.assertIsNotNone(gl)
 
-    @patch("csep.utils.plots.img_tiles.GoogleTiles")
+    @patch("csep.plots.img_tiles.GoogleTiles")
     def test_get_basemap_google_satellite(self, mock_google_tiles):
         # Simulate return value for Google satellite
         mock_google_tiles.return_value = MagicMock()
@@ -1281,7 +1281,7 @@ class TestHelperFunctions(TestPlots):
         mock_google_tiles.assert_called_once_with(style="satellite", cache=True)
         self.assertIsNotNone(tiles)
 
-    @patch("csep.utils.plots.img_tiles.GoogleTiles")
+    @patch("csep.plots.img_tiles.GoogleTiles")
     def test_get_basemap_esri_terrain(self, mock_google_tiles):
         # Simulate return value for ESRI terrain
         mock_google_tiles.return_value = MagicMock()
@@ -1293,7 +1293,7 @@ class TestHelperFunctions(TestPlots):
         )
         self.assertIsNotNone(tiles)
 
-    @patch("csep.utils.plots.img_tiles.GoogleTiles")
+    @patch("csep.plots.img_tiles.GoogleTiles")
     def test_get_basemap_custom_url(self, mock_google_tiles):
         # Simulate return value for custom URL
         custom_url = "https://custom.tileserver.com/tiles/{z}/{y}/{x}.jpg"

@@ -33,7 +33,8 @@ PyCSEP plotting functionality.
 import csep
 import cartopy
 import numpy
-from csep.utils import datasets, plots
+from csep.utils import datasets
+from csep import plots
 
 ####################################################################################################################################
 # **Load a Grid Forecast from the datasets**
@@ -60,7 +61,7 @@ forecast = csep.load_gridded_forecast(datasets.hires_ssm_italy_fname,
 # * Defines 0.8 for an exponential transparency function (default is 0 for constant alpha, whereas 1 for linear).
 # * An object :class:`cartopy.crs.Projection` (in this case :class:`cartopy.crs.Mercator`) is passed to the map
 #
-# The complete description of plot arguments can be found in :func:`csep.utils.plots.plot_gridded_dataset`
+# The complete description of plot arguments can be found in :func:`csep.plots.plot_gridded_dataset`
 #
 
 ax = forecast.plot(figsize=(10, 8),
@@ -115,7 +116,7 @@ rate_sum_log = numpy.log10(rate_sum)
 # **Plotting the dataset**
 #
 # To plot a global forecast, we must assign the option ``set_global=True``, which is required by :mod:`cartopy` to handle
-# internally the extent of the plot. We can further customize the plot using the required arguments from :func:`~csep.utils.plots.plot_gridded_dataset`
+# internally the extent of the plot. We can further customize the plot using the required arguments from :func:`~csep.plots.plot_gridded_dataset`
 #
 
 ax = plots.plot_gridded_dataset(
@@ -168,7 +169,7 @@ catalog = csep.query_comcat(start_time, end_time, min_magnitude=min_mag, verbose
 # * Set legend True and location in 3 (lower-left corner)
 # * Set a list of magnitude ticks to display in the legend
 #
-# The complete description of plot arguments can be found in :func:`csep.utils.plots.plot_catalog`.
+# The complete description of plot arguments can be found in :func:`csep.plots.plot_catalog`.
 # In case we want to store the arguments (i.e., for future plots) we can store them as a dictionary and then unpack them into the function with `**`.
 
 
@@ -191,7 +192,7 @@ plot_args = {'basemap': csep.datasets.basemap_california,
 ax = catalog.plot(show=True, **plot_args)
 
 ####################################################################################################################################
-# Alternatively, it can be plotted using the :func:`csep.utils.plots.plot_catalog` function
+# Alternatively, it can be plotted using the :func:`csep.plots.plot_catalog` function
 
 plots.plot_catalog(catalog=catalog, show=True, **plot_args)
 
@@ -221,7 +222,7 @@ catalog = csep.query_comcat(start_time, end_time, min_magnitude=min_mag, verbose
 ####################################################################################################################################
 # **Initialize a basemap with desired arguments**
 #
-# Plot the basemap alone by using :func:`csep.utils.plots.plot_basemap`. Do not set ``show=True`` and store the returned ``ax`` object to
+# Plot the basemap alone by using :func:`csep.plots.plot_basemap`. Do not set ``show=True`` and store the returned ``ax`` object to
 # start the composite plot
 
 # Start the base plot
@@ -263,7 +264,7 @@ plot_args = {'figsize': (6, 5),
              'tight_layout': True}
 
 ####################################################################################################################################
-# Description of plot arguments can be found in :func:`~csep.utils.plots.plot_consistency_test`.
+# Description of plot arguments can be found in :func:`~csep.plots.plot_consistency_test`.
 # We set ``one_sided_lower=True`` as usual for an L-test, where the model is rejected if the observed
 # is located within the lower tail of the simulated distribution.
 ax = plots.plot_consistency_test(L_results,

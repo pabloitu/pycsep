@@ -36,11 +36,11 @@ Overview:
 import numpy
 import pandas
 from csep.core import poisson_evaluations as poisson
-from csep.utils import time_utils, plots
 from csep.core.regions import QuadtreeGrid2D
 from csep.core.forecasts import GriddedForecast
 from csep.utils.time_utils import decimal_year_to_utc_epoch
 from csep.core.catalogs import CSEPCatalog
+from csep import plots
 
 ####################################################################################################################################
 # Load Training Catalog for Multi-resolution grid

@@ -26,7 +26,8 @@ Overview:
 
 import csep
 from csep.core import poisson_evaluations as poisson
-from csep.utils import datasets, time_utils, plots
+from csep.utils import datasets, time_utils
+from csep import plots
 
 ####################################################################################################################################
 # Define forecast properties
