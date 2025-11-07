@@ -1094,7 +1094,7 @@ def plot_test_distribution(
             x=observation,
             color="black",
             linestyle="--",
-            label=obs_label + numpy.isinf(observation) * " (-inf)",
+            label=obs_label + (" (-inf)" if numpy.isinf(observation) else "")
         )
     elif isinstance(observation, (list, numpy.ndarray)):
         observation = observation[~numpy.isnan(observation)]

@@ -984,8 +984,8 @@ class TestPlotSpatialDataset(TestPlots):
 
     class MockRegion:
         def __init__(self):
-            self.xs = numpy.linspace(-20, 20, 100)
-            self.ys = numpy.linspace(-10, 10, 50)
+            self.xs = numpy.linspace(-20, 20, 100, endpoint=False)
+            self.ys = numpy.linspace(-10, 10, 50, endpoint=False)
 
         @staticmethod
         def get_bbox():
