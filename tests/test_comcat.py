@@ -149,9 +149,9 @@ def test_moment_supplement():
 def test_detail():
     datadir = get_datadir()
     tape_file = os.path.join(datadir, 'vcr_detail.yaml')
-    with vcr.use_cassette(tape_file):
+    with vcr.use_cassette(tape_file, record_mode="none"):
         eventid = 'ci3144585'  # northridge
-        url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/%s.geojson' % eventid
+        url = f'https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/{eventid}.geojson'
         event = DetailEvent(url)
         assert str(
             event) == 'ci3144585 1994-01-17 12:30:55.390000 (34.213,-118.537) 18.2 km M6.7'
