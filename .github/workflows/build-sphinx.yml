@@ -16,7 +16,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           generate-run-shell: true
-          environment-file: requirements.yml
+          environment-file: environment.yml
           create-args: >-
             python=3.9
             pillow
