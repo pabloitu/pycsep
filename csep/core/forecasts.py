@@ -669,7 +669,7 @@ class CatalogForecast(LoggingMixin):
             self.get_expected_rates()
         return self.expected_rates.magnitude_counts()
 
-    def get_event_counts(self, verbose=True):
+    def get_event_counts(self, verbose=False):
         """ Returns a numpy array containing the number of event counts for each catalog.
 
             Note: This function can take a while to compute if called without already iterating through a forecast that
@@ -730,7 +730,7 @@ class CatalogForecast(LoggingMixin):
                                                   magnitudes=self.magnitudes, name=self.name)
             return self.expected_rates
 
-    def plot(self, plot_args = None, verbose=True, **kwargs):
+    def plot(self, plot_args = None, verbose=False, **kwargs):
         plot_args = plot_args or {}
         if self.expected_rates is None:
             self.get_expected_rates(verbose=verbose)

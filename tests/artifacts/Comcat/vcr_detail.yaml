@@ -20,6 +20,8 @@ interactions:
       - '*'
       Access-Control-Allow-Origin:
       - '*'
+      Age:
+      - '24'
       Cache-Control:
       - public, max-age=60
       Connection:
@@ -29,11 +31,11 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Fri, 07 Nov 2025 23:54:49 GMT
+      - Sat, 08 Nov 2025 02:26:08 GMT
       Expires:
-      - Fri, 07 Nov 2025 23:55:49 GMT
+      - Sat, 08 Nov 2025 02:27:08 GMT
       Last-Modified:
-      - Fri, 07 Nov 2025 23:54:49 GMT
+      - Sat, 08 Nov 2025 02:26:08 GMT
       Location:
       - /fdsnws/event/1/query?eventid=ci3144585&format=geojson
       Server:
@@ -41,13 +43,13 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000
       Via:
-      - 1.1 638b173cd330df78700f2706cc7e6c8a.cloudfront.net (CloudFront)
+      - 1.1 03a00118e0b935b7a21eca93697d226a.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - ATgdtPPDP03v_UIQ1aN6Xh4yeW5WPrB19p189Z9nliJk0YVi2UA89A==
+      - -RLitbHPkvLfWxXDn6Df5cFj1Oq5XuKcJI6YdR2lNzrUh3NC8C7t_Q==
       X-Amz-Cf-Pop:
       - TXL52-P1
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -143,6 +145,8 @@ interactions:
       - '*'
       Access-Control-Max-Age:
       - '86400'
+      Age:
+      - '22'
       Cache-Control:
       - public, max-age=60
       Connection:
@@ -150,11 +154,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 07 Nov 2025 23:54:50 GMT
+      - Sat, 08 Nov 2025 02:26:09 GMT
       Expires:
-      - Fri, 07 Nov 2025 23:55:50 GMT
+      - Sat, 08 Nov 2025 02:27:09 GMT
       Last-Modified:
-      - Fri, 07 Nov 2025 23:54:50 GMT
+      - Sat, 08 Nov 2025 02:26:09 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -164,13 +168,13 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 1e3ea313dab573eb0f8714b435227a78.cloudfront.net (CloudFront)
+      - 1.1 d82c2412e809a3e30a6396b85e4d6d9c.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - IGIg0FRuWCNt3KJAbxN-mrfYX7tbmnqCfE8ChzPs6QbmdVXJT5VLcg==
+      - x98WD0hrUmTL4Y9EBpHmJx8Ceeiq4Fz2fuaJLKTeFu-EAW8xXojdyw==
       X-Amz-Cf-Pop:
       - TXL52-P1
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -257,6 +261,8 @@ interactions:
       - '*'
       Access-Control-Max-Age:
       - '86400'
+      Age:
+      - '22'
       Cache-Control:
       - public, max-age=60
       Connection:
@@ -264,11 +270,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 07 Nov 2025 23:54:50 GMT
+      - Sat, 08 Nov 2025 02:26:10 GMT
       Expires:
-      - Fri, 07 Nov 2025 23:55:50 GMT
+      - Sat, 08 Nov 2025 02:27:10 GMT
       Last-Modified:
-      - Fri, 07 Nov 2025 23:54:50 GMT
+      - Sat, 08 Nov 2025 02:26:10 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -278,13 +284,13 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 b22f104a676a3f4e13adba34eb669b5c.cloudfront.net (CloudFront)
+      - 1.1 d0fbd668b0b800f172cbda367bd5a508.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - TkGHA60K3T_UZGs5BBrYIPyrfZTbaPZe1OsNE1_R47FdjAwvQlATmg==
+      - KYAS18WdgVJaXontLmpQd5HeRxXU0LR4h59U6JcSrW0SFTapFKQIrQ==
       X-Amz-Cf-Pop:
       - TXL52-P1
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -6873,13 +6879,11 @@ interactions:
       Access-Control-Max-Age:
       - '86400'
       Age:
-      - '796'
+      - '9898'
       Cache-Control:
       - max-age=315360000
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/xml
       Date:
@@ -6899,9 +6903,9 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 1b73d2d63bf1d475138b6429983516f8.cloudfront.net (CloudFront)
+      - 1.1 d0fbd668b0b800f172cbda367bd5a508.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - jtUba261aDXSJDNnbFNwlXZ672dVhv5vxZaxuCAH4Eq2Z21uY-jHCA==
+      - Jglv6XxRof_47EiBaLwmW2SeM_MmC7b1P3wUWZC5yYRZ8R4XrYzFPg==
       X-Amz-Cf-Pop:
       - TXL52-P1
       X-Cache:
@@ -6912,6 +6916,8 @@ interactions:
       - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
+      content-length:
+      - '1744435'
       x-amz-meta-modified:
       - '2017-02-04T11:29:10.000Z'
       x-amz-meta-sha256:
@@ -7043,6 +7049,8 @@ interactions:
       - '*'
       Access-Control-Max-Age:
       - '86400'
+      Age:
+      - '21'
       Cache-Control:
       - public, max-age=60
       Connection:
@@ -7050,11 +7058,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 07 Nov 2025 23:54:53 GMT
+      - Sat, 08 Nov 2025 02:26:13 GMT
       Expires:
-      - Fri, 07 Nov 2025 23:55:53 GMT
+      - Sat, 08 Nov 2025 02:27:13 GMT
       Last-Modified:
-      - Fri, 07 Nov 2025 23:54:53 GMT
+      - Sat, 08 Nov 2025 02:26:13 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -7064,13 +7072,13 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 c303e1e11f9af6d9db1d1e0a9f31eebe.cloudfront.net (CloudFront)
+      - 1.1 140f2df55faad62e5a3398dbaec419ac.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 8O92BJu3IqtkVqx5lCIm_P8gwXw6fRwVcr-jTx4X43AXeL-67uj85A==
+      - rWAQmcjkVehem2dL1ny5gtUfKbIIKr8v4_1ljb_SIKbdztJK8lMlEw==
       X-Amz-Cf-Pop:
       - TXL52-P1
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:

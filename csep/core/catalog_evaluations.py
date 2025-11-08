@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from csep.core.forecasts import CatalogForecast
 
 
-def number_test(forecast, observed_catalog, verbose=True):
+def number_test(forecast, observed_catalog, verbose=False):
     """ Performs the number test on a catalog-based forecast.
 
     The number test builds an empirical distribution of the event counts for each data. By default, this
@@ -62,7 +62,7 @@ def number_test(forecast, observed_catalog, verbose=True):
     return result
 
 
-def spatial_test(forecast, observed_catalog, verbose=True):
+def spatial_test(forecast, observed_catalog, verbose=False):
     """ Performs spatial test for catalog-based forecasts.
 
 
@@ -148,7 +148,7 @@ def spatial_test(forecast, observed_catalog, verbose=True):
     return result
 
 
-def magnitude_test(forecast, observed_catalog, verbose=True):
+def magnitude_test(forecast, observed_catalog, verbose=False):
     """ Performs magnitude test for catalog-based forecasts """
     test_distribution = []
 
@@ -224,7 +224,7 @@ def magnitude_test(forecast, observed_catalog, verbose=True):
     return result
 
 
-def pseudolikelihood_test(forecast, observed_catalog, verbose=True):
+def pseudolikelihood_test(forecast, observed_catalog, verbose=False):
     """ Performs the spatial pseudolikelihood test for catalog forecasts.
 
     Performs the spatial pseudolikelihood test as described by Savran et al., 2020. The tests uses a pseudolikelihood

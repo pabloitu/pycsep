@@ -601,7 +601,7 @@ def _simulate_catalog(num_events, sampling_weights, sim_fore,
 
 def _poisson_likelihood_test(forecast_data, observed_data,
                              num_simulations=1000, random_numbers=None,
-                             seed=None, use_observed_counts=True, verbose=True,
+                             seed=None, use_observed_counts=True, verbose=False,
                              normalize_likelihood=False):
     """
 	Computes the likelihood-test from CSEP using an efficient simulation based approach.
