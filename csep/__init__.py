@@ -2,18 +2,22 @@ import json
 import os
 import time
 
-from csep._version import __version__
-from csep.core import catalog_evaluations
-from csep.core import catalogs
 from csep.core import forecasts
+from csep.core import catalogs
 from csep.core import poisson_evaluations
+from csep.core import catalog_evaluations
 from csep.core import regions
-from csep.core.exceptions import CSEPCatalogException
-from csep.core.forecasts import GriddedForecast, CatalogForecast
 from csep.core.repositories import (
     load_json,
     write_json
 )
+
+from csep.core.exceptions import CSEPCatalogException
+
+from csep.utils import datasets
+from csep.utils import readers
+
+from csep.core.forecasts import GriddedForecast, CatalogForecast
 from csep.models import (
     EvaluationResult,
     CatalogNumberTestResult,
@@ -22,8 +26,7 @@ from csep.models import (
     CatalogPseudolikelihoodTestResult,
     CalibrationTestResult
 )
-from csep.utils import datasets
-from csep.utils import readers
+
 from csep.utils.time_utils import (
     utc_now_datetime,
     strptime_to_utc_datetime,
@@ -31,6 +34,13 @@ from csep.utils.time_utils import (
     epoch_time_to_utc_datetime,
     utc_now_epoch
 )
+
+from importlib.metadata import version as _pkg_version, PackageNotFoundError
+
+try:
+    __version__ = _pkg_version("pycsep")
+except PackageNotFoundError:
+    __version__ = "0+unknown"
 
 # this defines what is imported on a `from csep import *`
 __all__ = [
@@ -75,8 +85,8 @@ def load_stochastic_event_sets(filename, type='csv', format='native',
         (generator): :class:`~csep.core.catalogs.AbstractBaseCatalog`
 
     """
-    if type not in ('ucerf3', 'csv'):
-        raise ValueError("type must be one of the following: (ucerf3)")
+    if type not in ('ucerf3', 'csv', 'csep'):
+        raise ValueError("type must be one of the following: (ucerf3, csv, csep)")
 
     # use mapping to dispatch to correct function
     # in general, stochastic event sets are loaded with classmethods and single catalogs use the
@@ -100,7 +110,7 @@ def load_stochastic_event_sets(filename, type='csv', format='native',
         elif format == 'csep':
             yield catalog.get_csep_format()
         else:
-            raise ValueError('format must be either "native" or "csep!')
+            raise ValueError('format must be either "native" or "csep!"')
 
 
 def load_catalog(filename, type='csep-csv', format='native', loader=None,
