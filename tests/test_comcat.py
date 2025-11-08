@@ -146,10 +146,11 @@ def test_moment_supplement():
                               get_tensors='preferred')
         assert edict['us_Mww_percent_double_couple'] == 0.9992
 
+
 def test_detail():
     datadir = get_datadir()
     tape_file = os.path.join(datadir, 'vcr_detail.yaml')
-    with vcr.use_cassette(tape_file, record_mode="none"):
+    with vcr.use_cassette(tape_file, record_mode="none", decode_compressed_response=True):
         eventid = 'ci3144585'  # northridge
         url = f'https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/{eventid}.geojson'
         event = DetailEvent(url)
