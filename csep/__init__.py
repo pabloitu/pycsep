@@ -3,23 +3,17 @@ import os
 import time
 
 from csep._version import __version__
-
-from csep.core import forecasts
-from csep.core import catalogs
-from csep.core import poisson_evaluations
 from csep.core import catalog_evaluations
+from csep.core import catalogs
+from csep.core import forecasts
+from csep.core import poisson_evaluations
 from csep.core import regions
+from csep.core.exceptions import CSEPCatalogException
+from csep.core.forecasts import GriddedForecast, CatalogForecast
 from csep.core.repositories import (
     load_json,
     write_json
 )
-
-from csep.core.exceptions import CSEPCatalogException
-
-from csep.utils import datasets
-from csep.utils import readers
-
-from csep.core.forecasts import GriddedForecast, CatalogForecast
 from csep.models import (
     EvaluationResult,
     CatalogNumberTestResult,
@@ -28,7 +22,8 @@ from csep.models import (
     CatalogPseudolikelihoodTestResult,
     CalibrationTestResult
 )
-
+from csep.utils import datasets
+from csep.utils import readers
 from csep.utils.time_utils import (
     utc_now_datetime,
     strptime_to_utc_datetime,
@@ -333,7 +328,7 @@ def query_gns(start_time, end_time,  min_magnitude=2.950,
         verbose (bool): print catalog summary statistics
 
     Returns:
-        :class:`csep.core.catalogs.CSEPCatalog
+        :class:`csep.core.catalogs.CSEPCatalog`
     """
 
     # Timezone should be in UTC
@@ -366,7 +361,7 @@ def query_gcmt(start_time, end_time, min_magnitude=5.0,
                max_depth=None,
                catalog_id=None,
                min_latitude=None, max_latitude=None,
-               min_longitude=None, max_longitude=None):
+               min_longitude=None, max_longitude=None, verbose=True):
 
     eventlist = readers._query_gcmt(start_time=start_time,
                                      end_time=end_time,
@@ -381,6 +376,17 @@ def query_gcmt(start_time, end_time, min_magnitude=5.0,
                                    name='gCMT',
                                    catalog_id=catalog_id,
                                    date_accessed=utc_now_datetime())
+
+    if verbose:
+        print("Downloaded catalog from GCMT with following parameters")
+        print("Start Date: {}\nEnd Date: {}".format(str(catalog.start_time),
+                                                    str(catalog.end_time)))
+        print("Min Latitude: {} and Max Latitude: {}".format(catalog.min_latitude,
+                                                             catalog.max_latitude))
+        print("Min Longitude: {} and Max Longitude: {}".format(catalog.min_longitude,
+                                                               catalog.max_longitude))
+        print("Min Magnitude: {}".format(catalog.min_magnitude))
+        print(f"Found {catalog.event_count} events in the gns catalog.")
     return catalog
 
 
