@@ -60,7 +60,7 @@ If you don't have ``conda`` on your machine, download and install `Miniconda <ht
 
     git clone https://github.com/SCECcode/pycsep
     cd pycsep
-    conda env create -f requirements.yml
+    conda env create -f environment.yml
     conda activate csep-dev
     # Installs in editor mode with all dependencies
     pip install -e .
@@ -79,7 +79,7 @@ follow these instructions: ::
     python -m virtualenv venv
     source venv/bin/activate
     # Installs in editor mode dependencies are installed by conda
-    pip install -e .[all]
+    pip install -e .
 
 Note: If you want to go back to your default environment use the command ``deactivate``.
 
@@ -92,9 +92,9 @@ We recommend using ``conda`` to install the development environment. ::
 
     git clone https://github.com/<YOUR_GITHUB_USERNAME>/pycsep.git
     cd pycsep
-    conda env create -f requirements.yml
+    conda env create -f environment.yml
     conda activate csep-dev
-    pip install -e .[all]
+    pip install -e .[dev]
     # Allow sync with default repository
     git remote add upstream https://github.com/SCECCode/pycsep.git
 
