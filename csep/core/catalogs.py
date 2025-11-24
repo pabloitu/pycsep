@@ -733,7 +733,8 @@ class AbstractBaseCatalog(LoggingMixin):
             else:
                 return out
         idx = bin1d_vec(self.get_magnitudes(), mag_bins, tol=tol, right_continuous=True)
-        numpy.add.at(out, idx, 1)
+        valid = idx >= 0
+        numpy.add.at(out, idx[valid], 1)
         if retbins:
             return (mag_bins, out)
         else:

@@ -103,7 +103,7 @@ intersphinx_mapping = {
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "matplotlib": ("https://matplotlib.org/stable", None),
-    "cartopy": ('https://scitools.org.uk/cartopy/docs/latest/', None)
+    "cartopy": ('https://cartopy.readthedocs.io/stable/', None)
 }
 
 html_theme_options = {}
