@@ -24,6 +24,8 @@ from csep.core.catalog_evaluations import (
     CatalogPseudolikelihoodTestResult,
     CalibrationTestResult,
 )
+from csep.utils.calc import bin1d_vec
+from csep.utils.constants import CSEP_MW_BINS
 from csep.plots import (
     plot_cumulative_events_versus_time,
     plot_magnitude_versus_time,
@@ -241,7 +243,95 @@ class TestTimeSeriesPlots(TestPlots):
 
 class TestPlotMagnitudeHistogram(TestPlots):
 
+
+    class DummyCatalog:
+        def __init__(self, mags, region_mags=None):
+            import numpy
+            self._mags = numpy.asarray(mags)
+            if region_mags is not None:
+                self.region = type("R", (), {})()
+                self.region.magnitudes = numpy.asarray(region_mags)
+            else:
+                self.region = None
+
+        def get_magnitudes(self):
+            return self._mags
+
+        def magnitude_counts(self, mag_bins=None, tol=None, retbins=False):
+            # Minimal AbstractBaseCatalog.magnitude_counts behaviour
+
+
+            if mag_bins is None:
+                if self.region is not None and hasattr(self.region, "magnitudes"):
+                    mag_bins = self.region.magnitudes
+                else:
+                    mag_bins = CSEP_MW_BINS
+
+            mag_bins = numpy.asarray(mag_bins)
+            out = numpy.zeros(len(mag_bins))
+            if self._mags.size > 0:
+                idx = bin1d_vec(self._mags, mag_bins, tol=tol, right_continuous=True)
+                valid = idx >= 0
+                numpy.add.at(out, idx[valid], 1)
+
+            if retbins:
+                return mag_bins, out
+            return out
+
+    class DummyCatalogForecast:
+        def __init__(self, catalogs, region_mags):
+            import numpy
+            self.catalogs = list(catalogs)
+            self.region = type("R", (), {})()
+            self.region.magnitudes = numpy.asarray(region_mags)
+            self.n_cat = len(self.catalogs)
+            self._idx = 0
+
+        def __iter__(self):
+            self._idx = 0
+            return self
+
+        def __next__(self):
+            if self._idx >= self.n_cat:
+                self._idx = 0
+                raise StopIteration()
+            cat = self.catalogs[self._idx]
+            self._idx += 1
+            return cat
+
+        @property
+        def magnitudes(self):
+            return self.region.magnitudes
+
+    class DummyGriddedForecast:
+        def __init__(self, rates, region_mags):
+            import numpy
+            self._rates = numpy.asarray(rates)
+            self.region = type("R", (), {})()
+            self.region.magnitudes = numpy.asarray(region_mags)
+
+        @property
+        def magnitudes(self):
+            return self.region.magnitudes
+
+        def magnitude_counts(self):
+            return self._rates
+
+    class DummyGriddedForecastBadCounts(DummyGriddedForecast):
+        def magnitude_counts(self):
+            import numpy
+            rates = super().magnitude_counts()
+            if rates.size > 1:
+                return rates[:-1]
+            return rates
+
+    class DummyForecastNoMagnitudes:
+        pass
+
+    # --- setUp -------------------------------------------------------------
+
     def setUp(self):
+        super().setUp()
 
         def gr_dist(num_events, mag_min=3.0, mag_max=8.0, b_val=1.0):
             U = numpy.random.uniform(0, 1, num_events)
@@ -249,15 +339,28 @@ class TestPlotMagnitudeHistogram(TestPlots):
             magnitudes = magnitudes[magnitudes <= mag_max]
             return magnitudes
 
-        self.mock_forecast = [MagicMock(), MagicMock(), MagicMock()]
-        for i in self.mock_forecast:
-            i.get_magnitudes.return_value = gr_dist(5000)
+        # Regular magnitude bins for dummy forecasts
+        self.region_mags = numpy.arange(3.0, 8.0, 0.1)
 
-        self.mock_cat = MagicMock()
-        self.mock_cat.get_magnitudes.return_value = gr_dist(500, b_val=1.2)
-        self.mock_cat.get_number_of_events.return_value = 500
-        self.mock_cat.region.magnitudes = numpy.arange(3.0, 8.0, 0.1)
+        # Dummy catalog-based forecast: 3 catalogs with GR magnitudes
+        dummy_cats = [
+            self.DummyCatalog(gr_dist(5000, b_val=1.0), region_mags=self.region_mags)
+            for _ in range(3)
+        ]
+        self.dummy_catalog_forecast = self.DummyCatalogForecast(dummy_cats, self.region_mags)
 
+        # Dummy observation catalog
+        self.dummy_observation = self.DummyCatalog(
+            gr_dist(500, b_val=1.2), region_mags=self.region_mags
+        )
+
+        # Dummy gridded forecast (Poisson / rate-based)
+        self.dummy_gridded_forecast = self.DummyGriddedForecast(
+            rates=numpy.array([10.0, 5.0, 1.0, 0.5, 0.1]),
+            region_mags=numpy.array([3.0, 3.1, 3.2, 3.3, 3.4]),
+        )
+
+        # Real data from artifacts (integration test)
         cat_file_m5 = os.path.join(
             self.artifacts,
             "example_csep2_forecasts",
@@ -272,29 +375,178 @@ class TestPlotMagnitudeHistogram(TestPlots):
             "ucerf3-landers_short.csv",
         )
 
-        self.stochastic_event_sets = csep.load_catalog_forecast(forecast_file)
+        self.stochastic_event_sets = csep.load_catalog_forecast(
+            forecast_file,
+            region=csep.regions.california_relm_region(magnitudes=[4.0, 5.0, 6.0]),
+        )
 
         os.makedirs(self.save_dir, exist_ok=True)
 
-    def test_plot_magnitude_histogram_basic(self):
-        # Test with basic arguments
-        plot_magnitude_histogram(
-            self.mock_forecast, self.mock_cat, show=show_plots, density=True
+    # --- tests -------------------------------------------------------------
+
+    def test_basic_catalog_forecast(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_catalog_forecast,
+            self.dummy_observation,
+            normalize=True,
+            cumulative=False,
+            intervals=True,
+            show=show_plots,
         )
+        self.assertIsNotNone(ax)
+        self.assertEqual(ax.get_yscale(), "log")
 
-        # Verify that magnitudes were retrieved
-        for catalog in self.mock_forecast:
-            catalog.get_magnitudes.assert_called_once()
-        self.mock_cat.get_magnitudes.assert_called_once()
-        self.mock_cat.get_number_of_events.assert_called_once()
+    def test_ucerf_example(self):
+        ax = plot_magnitude_histogram(
+            self.stochastic_event_sets,
+            self.comcat,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
 
-    def test_plot_magnitude_histogram_ucerf(self):
-        # Test with basic arguments
-        plot_magnitude_histogram(self.stochastic_event_sets, self.comcat, show=show_plots)
+    def test_catalog_cumulative(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_catalog_forecast,
+            self.dummy_observation,
+            cumulative=True,
+            intervals=True,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
+        y = ax.lines[1].get_ydata()
+        self.assertTrue(numpy.all(numpy.diff(y) <= 1e-8))
+
+    def test_catalog_no_intervals(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_catalog_forecast,
+            self.dummy_observation,
+            cumulative=False,
+            intervals=False,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
+        self.assertGreaterEqual(len(ax.lines), 2)
+
+    def test_gridded_basic(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=None,
+            normalize=False,
+            cumulative=False,
+            intervals=True,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
+        self.assertEqual(ax.get_yscale(), "log")
+
+    def test_gridded_cumulative(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=None,
+            normalize=False,
+            cumulative=True,
+            intervals=True,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
+        y = ax.lines[0].get_ydata()
+        self.assertTrue(numpy.all(numpy.diff(y) <= 1e-8))
+
+    def test_gridded_no_intervals(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=None,
+            cumulative=False,
+            intervals=False,
+            show=show_plots,
+        )
+        self.assertIsNotNone(ax)
+
+    def test_mismatch_rates_bins(self):
+        bad_forecast = self.DummyGriddedForecastBadCounts(
+            rates=numpy.array([10.0, 5.0, 1.0, 0.5, 0.1]),
+            region_mags=numpy.array([3.0, 3.1, 3.2, 3.3, 3.4]),
+        )
+        with self.assertRaises(ValueError):
+            plot_magnitude_histogram(
+                bad_forecast,
+                observation=None,
+                show=False,
+            )
+
+    def test_missing_magnitudes_attr(self):
+        forecast = self.DummyForecastNoMagnitudes()
+        with self.assertRaises(AttributeError):
+            plot_magnitude_histogram(
+                forecast,
+                observation=None,
+                show=False,
+            )
+
+    def test_default_labels(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=None,
+            show=False,
+        )
+        self.assertEqual(ax.get_xlabel(), "Magnitude")
+        self.assertEqual(ax.get_ylabel(), "Event count")
+        self.assertEqual(ax.get_title(), "Magnitude Histogram")
+
+    def test_custom_labels(self):
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=None,
+            xlabel="Mw",
+            ylabel="Number of events",
+            title="Custom Title",
+            show=False,
+        )
+        self.assertEqual(ax.get_xlabel(), "Mw")
+        self.assertEqual(ax.get_ylabel(), "Number of events")
+        self.assertEqual(ax.get_title(), "Custom Title")
+
+    def test_obs_default_bins(self):
+        obs = self.DummyCatalog(self.dummy_observation.get_magnitudes(), region_mags=None)
+        ax = plot_magnitude_histogram(
+            self.dummy_gridded_forecast,
+            observation=obs,
+            show=False,
+        )
+        self.assertIsNotNone(ax)
+
+    def test_random_gridded_forecasts(self):
+        rng = numpy.random.default_rng(1234)
+        for _ in range(10):
+            n_bins = rng.integers(3, 15)
+            m_min = rng.uniform(2.0, 5.0)
+            m_max = m_min + rng.uniform(0.5, 3.0)
+            mag_bins = numpy.linspace(m_min, m_max, n_bins)
+
+            rates = rng.uniform(0.0, 20.0, size=n_bins)
+
+            forecast = self.DummyGriddedForecast(rates=rates, region_mags=mag_bins)
+            cumulative = bool(rng.integers(0, 2))
+            log_scale = bool(rng.integers(0, 2))
+            normed = bool(rng.integers(0, 2))
+            plot_intervals = bool(rng.integers(0, 2))
+
+            ax = plot_magnitude_histogram(
+                forecast,
+                observation=None,
+                magnitude_bins=mag_bins,
+                cumulative=cumulative,
+                log_scale=log_scale,
+                normalize=normed,
+                intervals=plot_intervals,
+                show=False,
+            )
+            self.assertIsNotNone(ax)
 
     def tearDown(self):
         plt.close("all")
         gc.collect()
+        super().tearDown()
 
 
 class TestPlotDistributionTests(TestPlots):
