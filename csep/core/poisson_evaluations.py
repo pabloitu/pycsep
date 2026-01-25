@@ -555,7 +555,9 @@ def _w_test_ndarray(x, m=0):
     mn = count * (count + 1.) * 0.25
     se = count * (count + 1.) * (2. * count + 1.)
 
-    replist, repnum = scipy.stats.find_repeats(r)
+    _, repnum = numpy.unique(r, return_counts=True)
+    repnum = repnum[repnum > 1]
+
     if repnum.size != 0:
         # Correction for repeated elements.
         se -= 0.5 * (repnum * (repnum * repnum - 1)).sum()

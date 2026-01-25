@@ -109,6 +109,25 @@ class TestGriddedForecastTests(unittest.TestCase):
         print('W Test: Running Unit Test')
         self.assertEqual(_w_test_ndarray(x, median), expected_output, 'Failed W Test')
 
+        out_rev = _w_test_ndarray(x[::-1], median)
+        self.assertAlmostEqual(out_rev['z_statistic'], expected_output['z_statistic'], places=15)
+        self.assertAlmostEqual(out_rev['probability'], expected_output['probability'], places=15)
+
+        x_with_zeros = numpy.concatenate([x, numpy.array([median, median, median])])
+        out_with_zeros = _w_test_ndarray(x_with_zeros, median)
+        self.assertAlmostEqual(out_with_zeros['z_statistic'], expected_output['z_statistic'], places=15)
+        self.assertAlmostEqual(out_with_zeros['probability'], expected_output['probability'], places=15)
+
+        x_ties = numpy.array([median + 1, median - 1,
+                              median + 2, median - 2,
+                              median + 2, median - 2,
+                              median + 5, median - 5,
+                              median + 10, median - 10], dtype=float)
+        out_ties = _w_test_ndarray(x_ties, median)
+        self.assertTrue(numpy.isfinite(out_ties['z_statistic']))
+        self.assertTrue(0.0 <= out_ties['probability'] <= 1.0)
+
+
     def test_t_test(self):
         pass
         """

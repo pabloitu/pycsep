@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pycsep"
-dynamic = ["version"]              # <— version comes from SCM
+dynamic = ["version"]
 description = "Python tools from the Collaboratory for the Study of Earthquake Predictability"
 readme = "README.md"
 requires-python = ">=3.9"
