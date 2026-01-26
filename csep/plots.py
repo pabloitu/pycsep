@@ -8,20 +8,22 @@ import numpy
 import pandas
 import cartopy
 import cartopy.crs as ccrs
-import matplotlib
-import matplotlib.lines
-import matplotlib.pyplot as pyplot
 from cartopy.io import img_tiles
 from cartopy.io.img_tiles import GoogleWTS
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
-from matplotlib.axes import Axes
-from matplotlib.dates import AutoDateLocator, DateFormatter
-from matplotlib.lines import Line2D
 from rasterio import DatasetReader
 from rasterio import plot as rio_plot
 from rasterio import open as rio_open
 from scipy.integrate import cumulative_trapezoid
 from scipy.stats import poisson, nbinom, beta
+import matplotlib
+if "MPLBACKEND" not in os.environ:
+    matplotlib.use("Agg", force=True)
+import matplotlib.lines
+import matplotlib.pyplot as pyplot
+from matplotlib.axes import Axes
+from matplotlib.dates import AutoDateLocator, DateFormatter
+from matplotlib.lines import Line2D
 
 # PyCSEP imports
 import csep.utils.time_utils
