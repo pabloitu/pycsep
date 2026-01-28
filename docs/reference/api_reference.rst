@@ -215,8 +215,11 @@ Testing regions:
     :toctree: generated
 
     california_relm_region
+    california_relm_collection_region
     italy_csep_region
+    italy_csep_collection_region
     nz_csep_region
+    nz_csep_collection_region
     global_region
 
 Region utilities:
