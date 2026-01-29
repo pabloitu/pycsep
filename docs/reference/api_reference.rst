@@ -207,7 +207,18 @@ Region class(es):
     :toctree: generated
 
     CartesianGrid2D
+    CartesianGrid2D.from_origins
+    CartesianGrid2D.from_dict
+    CartesianGrid2D.to_dict
     CartesianGrid2D.get_cartesian
+    CartesianGrid2D.get_cell_area
+    CartesianGrid2D.get_index_of
+
+    QuadtreeGrid2D
+    QuadtreeGrid2D.from_catalog
+    QuadtreeGrid2D.from_single_resolution
+    QuadtreeGrid2D.from_quadkeys
+    QuadtreeGrid2D.get_cartesian
 
 Testing regions:
 
@@ -215,8 +226,11 @@ Testing regions:
     :toctree: generated
 
     california_relm_region
+    california_relm_collection_region
     italy_csep_region
+    italy_csep_collection_region
     nz_csep_region
+    nz_csep_collection_region
     global_region
 
 Region utilities:
