@@ -71,7 +71,7 @@ def _simulate_catalog(sim_cells, sampling_weights, random_numbers=None):
 
 
 def _brier_score_test(forecast_data, observed_data, num_simulations=1000,
-                      random_numbers=None, seed=None, verbose=True):
+                      random_numbers=None, seed=None, verbose=False):
     """  Computes the Brier consistency test conditional on the total observed
     number of events
 

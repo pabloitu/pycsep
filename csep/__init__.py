@@ -2,8 +2,6 @@ import json
 import os
 import time
 
-from csep._version import __version__
-
 from csep.core import forecasts
 from csep.core import catalogs
 from csep.core import poisson_evaluations
@@ -36,6 +34,13 @@ from csep.utils.time_utils import (
     epoch_time_to_utc_datetime,
     utc_now_epoch
 )
+
+from importlib.metadata import version as _pkg_version, PackageNotFoundError
+
+try:
+    __version__ = _pkg_version("pycsep")
+except PackageNotFoundError:
+    __version__ = "0+unknown"
 
 # this defines what is imported on a `from csep import *`
 __all__ = [
@@ -80,8 +85,8 @@ def load_stochastic_event_sets(filename, type='csv', format='native',
         (generator): :class:`~csep.core.catalogs.AbstractBaseCatalog`
 
     """
-    if type not in ('ucerf3', 'csv'):
-        raise ValueError("type must be one of the following: (ucerf3)")
+    if type not in ('ucerf3', 'csv', 'csep'):
+        raise ValueError("type must be one of the following: (ucerf3, csv, csep)")
 
     # use mapping to dispatch to correct function
     # in general, stochastic event sets are loaded with classmethods and single catalogs use the
@@ -105,7 +110,7 @@ def load_stochastic_event_sets(filename, type='csv', format='native',
         elif format == 'csep':
             yield catalog.get_csep_format()
         else:
-            raise ValueError('format must be either "native" or "csep!')
+            raise ValueError('format must be either "native" or "csep!"')
 
 
 def load_catalog(filename, type='csep-csv', format='native', loader=None,
@@ -333,7 +338,7 @@ def query_gns(start_time, end_time,  min_magnitude=2.950,
         verbose (bool): print catalog summary statistics
 
     Returns:
-        :class:`csep.core.catalogs.CSEPCatalog
+        :class:`csep.core.catalogs.CSEPCatalog`
     """
 
     # Timezone should be in UTC
@@ -366,7 +371,7 @@ def query_gcmt(start_time, end_time, min_magnitude=5.0,
                max_depth=None,
                catalog_id=None,
                min_latitude=None, max_latitude=None,
-               min_longitude=None, max_longitude=None):
+               min_longitude=None, max_longitude=None, verbose=True):
 
     eventlist = readers._query_gcmt(start_time=start_time,
                                      end_time=end_time,
@@ -381,6 +386,17 @@ def query_gcmt(start_time, end_time, min_magnitude=5.0,
                                    name='gCMT',
                                    catalog_id=catalog_id,
                                    date_accessed=utc_now_datetime())
+
+    if verbose:
+        print("Downloaded catalog from GCMT with following parameters")
+        print("Start Date: {}\nEnd Date: {}".format(str(catalog.start_time),
+                                                    str(catalog.end_time)))
+        print("Min Latitude: {} and Max Latitude: {}".format(catalog.min_latitude,
+                                                             catalog.max_latitude))
+        print("Min Longitude: {} and Max Longitude: {}".format(catalog.min_longitude,
+                                                               catalog.max_longitude))
+        print("Min Magnitude: {}".format(catalog.min_magnitude))
+        print(f"Found {catalog.event_count} events in the gns catalog.")
     return catalog
 
 

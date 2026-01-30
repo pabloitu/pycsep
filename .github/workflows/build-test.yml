@@ -2,13 +2,12 @@ name: tests
 
 on:
   push:
-    branches-ignore:
-      - 'v*'
+    branches: [main]
   pull_request:
 
 jobs:
   build:
-    if: github.repository == 'SCECcode/pycsep'
+    if: github.repository == 'cseptesting/pycsep'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -27,7 +26,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           generate-run-shell: true
-          environment-file: requirements.yml
+          environment-file: environment.yml
           create-args: >-
             python=${{ matrix.python-version }}
 
@@ -48,7 +47,7 @@ jobs:
 
 
   build_pip:
-    if: github.repository == 'SCECcode/pycsep'
+    if: github.repository == 'cseptesting/pycsep'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

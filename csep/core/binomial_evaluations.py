@@ -65,7 +65,7 @@ def negative_binomial_number_test(gridded_forecast, observed_catalog, variance):
     delta1, delta2 = _nbd_number_test_ndarray(fore_cnt, obs_cnt, variance, epsilon=epsilon)
     
     # store results
-    result.test_distribution = ('negative_binomial', fore_cnt)
+    result.test_distribution = ('negative_binomial', fore_cnt, variance)
     result.name = 'NBD N-Test'
     result.observed_statistic = obs_cnt
     result.quantile = (delta1, delta2)
@@ -126,7 +126,7 @@ def _simulate_catalog(sim_cells, sampling_weights, sim_fore, random_numbers=None
     
 
 def _binary_likelihood_test(forecast_data, observed_data, num_simulations=1000, random_numbers=None, 
-                              seed=None, use_observed_counts=True, verbose=True, normalize_likelihood=False):
+                              seed=None, use_observed_counts=True, verbose=False, normalize_likelihood=False):
     """  Computes binary conditional-likelihood test from CSEP using an efficient simulation based approach.
     
     Args:

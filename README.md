@@ -89,4 +89,4 @@ Development of pyCSEP is a group effort. A list of developers that have contribu
 are listed in the [credits](CREDITS.md) file in this repository.
 
 # License:
-The pyCSEP software is distributed under the BSD 3-Clause open-source license. Please see the [license](LICENSE.txt) file for more information.
+The pyCSEP software is distributed under the BSD 3-Clause open-source license. Please see the [license](LICENSE) file for more information.

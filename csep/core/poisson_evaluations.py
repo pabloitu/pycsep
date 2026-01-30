@@ -47,7 +47,7 @@ def paired_t_test(forecast, benchmark_forecast, observed_catalog,
     result.name = 'Paired T-Test'
     result.test_distribution = (out['ig_lower'], out['ig_upper'])
     result.observed_statistic = out['information_gain']
-    result.quantile = (out['t_statistic'], out['t_critical'])
+    result.quantile = (out['t_statistic'], out['t_critical'], alpha)
     result.sim_name = (forecast.name, benchmark_forecast.name)
     result.obs_name = observed_catalog.name
     result.status = 'normal'
@@ -555,7 +555,9 @@ def _w_test_ndarray(x, m=0):
     mn = count * (count + 1.) * 0.25
     se = count * (count + 1.) * (2. * count + 1.)
 
-    replist, repnum = scipy.stats.find_repeats(r)
+    _, repnum = numpy.unique(r, return_counts=True)
+    repnum = repnum[repnum > 1]
+
     if repnum.size != 0:
         # Correction for repeated elements.
         se -= 0.5 * (repnum * (repnum * repnum - 1)).sum()
@@ -601,7 +603,7 @@ def _simulate_catalog(num_events, sampling_weights, sim_fore,
 
 def _poisson_likelihood_test(forecast_data, observed_data,
                              num_simulations=1000, random_numbers=None,
-                             seed=None, use_observed_counts=True, verbose=True,
+                             seed=None, use_observed_counts=True, verbose=False,
                              normalize_likelihood=False):
     """
 	Computes the likelihood-test from CSEP using an efficient simulation based approach.

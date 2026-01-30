@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=69", "wheel", "build", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycsep"
+dynamic = ["version"]
+description = "Python tools from the Collaboratory for the Study of Earthquake Predictability"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "William Savran", email = "wsavran@unr.edu" }]
+urls = { "Homepage" = "https://github.com/SCECCode/pycsep" }
+
+dependencies = [
+  "numpy",
+  "scipy",
+  "pandas",
+  "matplotlib",
+  "cartopy",
+  "obspy",
+  "pyproj",
+  "python-dateutil",
+  "rasterio",
+  "mercantile",
+  "shapely",
+]
+
+[project.optional-dependencies]
+dev  = ["pytest", "vcrpy", "pytest-cov", "sphinx", "sphinx-gallery", "sphinx-rtd-theme", "pillow", "tox"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["csep*"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+
+[tool.tox]
+min_version = "4.0"
+env_list = ["py39", "py310", "py311", "py312"]
+skip_missing_interpreters = true
+
+[tool.tox.requires]
+requires = ["tox-conda>=0.10"]
+
+[tool.tox.env.py]
+package = "wheel"
+wheel_build_env = ".pkg"
+extras = ["dev"]
+conda_channels = ["conda-forge"]
+conda_deps = [
+  "python",
+  "numpy",
+  "pandas",
+  "scipy",
+  "matplotlib",
+  "pyproj",
+  "obspy",
+  "python-dateutil",
+  "cartopy",
+  "shapely",
+  "rasterio",
+  "mercantile"
+]
+set_env = { MPLBACKEND = "Agg" }
+pass_env = ["PYTEST_ADDOPTS"]
+commands = ["pytest --basetemp={envtmpdir}"]

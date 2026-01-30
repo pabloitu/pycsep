@@ -19,7 +19,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           generate-run-shell: true
-          environment-file: requirements.yml
+          environment-file: environment.yml
           create-args: >-
             python=3.10
 
@@ -28,13 +28,13 @@ jobs:
           conda info -a
           conda list
 
-      - name: Create sdist
+      - name: Create sdist and wheel
         run: |
-          python setup.py check
-          python setup.py sdist
+          python -m pip install --upgrade pip build
+          python -m build
 
       - name: Publish Package
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.pypi_upload_token }}

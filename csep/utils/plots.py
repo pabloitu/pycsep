@@ -1,4 +1,5 @@
 import time
+import warnings
 
 # Third-party imports
 import numpy
@@ -43,6 +44,9 @@ def plot_cumulative_events_versus_time_dev(xdata, ydata, obs_data,
                                            plot_args, show=False):
     """
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_test_distribution` instead.
 
     Args:
         xdata (ndarray): time bins for plotting shape (N,)
@@ -54,6 +58,15 @@ def plot_cumulative_events_versus_time_dev(xdata, ydata, obs_data,
     Returns:
 
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_cumulative_events_versus_time_dev' is deprecated and will be removed in version 1.0.\n"
+        "Please use 'csep.plots.plot_cumulative_events_versus_time' with the appropriate keyword arguments instead:\n"
+        "    catalog_forecast (CatalogForecast), observation (CSEPCatalog), show (bool), etc.\n\n"
+        "See the updated documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_cumulative_events_versus_time.html\n",
+        DeprecationWarning,
+        stacklevel=2
+    )
     figsize = plot_args.get('figsize', None)
     sim_label = plot_args.get('sim_label', 'Simulated')
     obs_label = plot_args.get('obs_label', 'Observation')
@@ -100,6 +113,11 @@ def plot_cumulative_events_versus_time_dev(xdata, ydata, obs_data,
 def plot_cumulative_events_versus_time(stochastic_event_sets, observation,
                                        show=False, plot_args=None):
     """
+
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_test_distribution` instead.
+
     Same as below but performs the statistics on numpy arrays without using pandas data frames.
 
     Args:
@@ -111,6 +129,16 @@ def plot_cumulative_events_versus_time(stochastic_event_sets, observation,
     Returns:
         ax: matplotlib.Axes
     """
+
+    warnings.warn(
+        "'csep.utils.plots.plot_cumulative_events_versus_time' is deprecated and will be removed "
+        "in version 1.0. Please use the updated function 'csep.plots.plot_cumulative_events_versus_time' with the keyword arguments:\n"
+        "    catalog_forecast (CatalogForecast), observation (CSEPCatalog), show (bool), etc.\n\n"
+        "See the updated documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_cumulative_events_versus_time.html\n",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     print('Plotting cumulative event counts.')
     figsize = plot_args.get('figsize', None)
@@ -208,6 +236,10 @@ def plot_cumulative_events_versus_time(stochastic_event_sets, observation,
 def plot_magnitude_versus_time(catalog, filename=None, show=False,
                                reset_times=False, plot_args=None, **kwargs):
     """
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.utils.plots.plot_magnitude_versus_time` instead
+
     Plots magnitude versus linear time for an earthquake data.
 
     Catalog class must implement get_magnitudes() and get_datetimes() in order for this function to work correctly.
@@ -219,6 +251,16 @@ def plot_magnitude_versus_time(catalog, filename=None, show=False,
         (tuple): fig and axes handle
     """
     # get values from plotting args
+
+    warnings.warn(
+        "'csep.utils.plots.plot_magnitude_versus_time' is deprecated and will be removed "
+        "in version 1.0. Please use the updated function 'csep.plots.plot_magnitude_versus_time' with the keyword arguments:\n"
+        "    catalog_forecast (CatalogForecast), observation (CSEPCatalog), show (bool), etc.\n\n"
+        "See the updated documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_magnitude_versus_time.html\n",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     title = plot_args.get('title', '')
     marker_size = plot_args.get('marker_size', 10)
@@ -279,6 +321,11 @@ def plot_magnitude_versus_time(catalog, filename=None, show=False,
 def plot_histogram(simulated, observation, bins='fd', percentile=None,
                    show=False, axes=None, catalog=None, plot_args=None):
     """
+
+    .. deprecated:: 0.7.0
+        This function is deprecated and will be removed in version 1.0.
+        Please use :func:`~csep.plots.plot_test_distribution` instead.
+
     Plots histogram of single statistic for stochastic event sets and observations. The function will behave differently
     depending on the inumpyuts.
 
@@ -299,11 +346,21 @@ def plot_histogram(simulated, observation, bins='fd', percentile=None,
         show (bool): show interactive version of the figure
         ax (axis object): axis object with interface defined by matplotlib
         catalog (csep.AbstractBaseCatalog): used for annotating the figures
-        plot_args (dict): additional plotting commands. TODO: Documentation
+        plot_args (dict): additional plotting commands.
 
     Returns:
         axis: matplolib axes handle
     """
+
+    warnings.warn(
+        "'csep.utils.plots.plot_histogram' is deprecated and will be removed in version 1.0.\n"
+        "Please use 'csep.plots.plot_test_distribution' instead, which provides improved support for test statistics.\n\n"
+        "See the documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
+
     # Plotting
     plot_args = plot_args or {}
     chained = False
@@ -415,6 +472,13 @@ def plot_histogram(simulated, observation, bins='fd', percentile=None,
 
 def plot_ecdf(x, ecdf, axes=None, xv=None, show=False, plot_args=None):
     """ Plots empirical cumulative distribution function.  """
+    warnings.warn(
+        "'csep.utils.plots.plot_ecdf' will be removed in a future version of the package.\n"
+        "If you rely on this functionality, consider switching to a custom ECDF implementation,"
+        "or use the histogram-based distribution 'csep.plots.plot_magnitude_distribution'",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     # get values from plotting args
     sim_label = plot_args.get('sim_label', 'Simulated')
@@ -452,6 +516,14 @@ def plot_ecdf(x, ecdf, axes=None, xv=None, show=False, plot_args=None):
 
 
 def plot_magnitude_histogram_dev(ses_data, obs, plot_args, show=False):
+    warnings.warn(
+        "'csep.utils.plots.plot_magnitude_histogram_dev' is deprecated and will be removed in version 1.0.\n"
+        "Please use 'csep.plots.plot_magnitude_histogram' instead.\n"
+        "See the documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_magnitude_histogram.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     bin_edges, obs_hist = obs.magnitude_counts(retbins=True)
     n_obs = numpy.sum(obs_hist)
     event_counts = numpy.sum(ses_data, axis=1)
@@ -514,6 +586,14 @@ def plot_magnitude_histogram_dev(ses_data, obs, plot_args, show=False):
 def plot_magnitude_histogram(catalogs, comcat, show=True, plot_args=None):
     """ Generates a magnitude histogram from a catalog-based forecast """
     # get list of magnitudes list of ndarray
+    warnings.warn(
+        "'csep.utils.plots.plot_magnitude_histogram' is deprecated and will be removed in version 1.0.\n"
+        "Please use 'csep.plots.plot_magnitude_histogram' instead.\n"
+        "See the documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_magnitude_histogram.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     catalogs_mws = list(map(lambda x: x.get_magnitudes(), catalogs))
     obs_mw = comcat.get_magnitudes()
@@ -597,6 +677,11 @@ def plot_basemap(basemap, extent, ax=None, figsize=None, coastline=True,
                  show=False):
     """ Wrapper function for multiple cartopy base plots, including access to standard raster webservices
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_basemap` instead
+
+
      Args:
          basemap (str): Possible values are: stock_img, stamen_terrain, stamen_terrain-background, google-satellite, ESRI_terrain, ESRI_imagery, ESRI_relief, ESRI_topo, ESRI_terrain, or webservice link (see examples in :func:`csep.utils.plots._get_basemap`. Default is None
          extent (list):  [lon_min, lon_max, lat_min, lat_max]
@@ -620,6 +705,13 @@ def plot_basemap(basemap, extent, ax=None, figsize=None, coastline=True,
          :class:`matplotlib.pyplot.ax` object
 
      """
+
+    warnings.warn(
+        "'csep.utils.plots.plot_basemap' is deprecated and will be removed in version 1.0. Please use 'csep.plots.plot_basemap' instead \n\n"
+        "Please consult the updated documentation at:\n"
+        "    https://docs.cseptesting.org/reference/generated/csep.plots.plot_basemap.html\n",
+        DeprecationWarning,
+        stacklevel=2)
     if ax is None:
         if apprx:
             projection = ccrs.PlateCarree()
@@ -690,6 +782,10 @@ def plot_catalog(catalog, ax=None, show=False, extent=None, set_global=False,
                  plot_args=None):
     """ Plot catalog in a region
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_catalog` instead.
+
     Args:
         catalog (:class:`CSEPCatalog`): Catalog object to be plotted
         ax (:class:`matplotlib.pyplot.ax`): Previously defined ax object (e.g from plot_spatial_dataset)
@@ -728,6 +824,12 @@ def plot_catalog(catalog, ax=None, show=False, extent=None, set_global=False,
         :class:`matplotlib.pyplot.ax` object
 
     """
+    warnings.warn(
+        "'csep.utils.plots.catalog' is deprecated and will be removed in version 1.0. Please use 'csep.plots.plot_catalog' instead\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_catalog.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     # Get spatial information for plotting
 
     # Retrieve plot arguments
@@ -879,6 +981,10 @@ def plot_spatial_dataset(gridded, region, ax=None, show=False, extent=None,
                          set_global=False, plot_args=None):
     """ Plot spatial dataset such as data from a gridded forecast
 
+    .. deprecated:: 0.7.0
+        This function is deprecated and will be removed in version 1.0.
+        Please use :func:`~csep.plots.plot_gridded_dataset` instead.
+
     Args:
         gridded (2D :class:`numpy.array`): Values according to `region`,
         region (:class:`CartesianGrid2D`): Region in which gridded values are contained
@@ -916,6 +1022,14 @@ def plot_spatial_dataset(gridded, region, ax=None, show=False, extent=None,
 
 
     """
+
+    warnings.warn(
+        "'csep.utils.plots.plot_spatial_dataset' is deprecated and will be removed in version 1.0.\n"
+        "Please use 'csep.plots.plot_gridded_dataset' instead.\n"
+        "See https://docs.cseptesting.org/reference/generated/csep.plots.plot_gridded_dataset.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     # Get spatial information for plotting
     bbox = region.get_bbox()
     if extent is None and not set_global:
@@ -1041,6 +1155,10 @@ def plot_number_test(evaluation_result, axes=None, show=True, plot_args=None):
     Takes result from evaluation and generates a specific histogram plot to show the results of the statistical evaluation
     for the n-test.
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_test_distribution` instead
+
     Args:
         evaluation_result: object-like var that implements the interface of the above EvaluationResult
         axes (matplotlib.Axes): axes object used to chain this plot
@@ -1065,6 +1183,13 @@ def plot_number_test(evaluation_result, axes=None, show=True, plot_args=None):
         ax (matplotlib.axes.Axes): can be used to modify the figure
 
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_number_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_test_distribution' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
 
     # chain plotting axes if requested
     if axes:
@@ -1143,6 +1268,10 @@ def plot_magnitude_test(evaluation_result, axes=None, show=True,
     Takes result from evaluation and generates a specific histogram plot to show the results of the statistical evaluation
     for the M-test.
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_test_distribution` instead
+
     Args:
         evaluation_result: object-like var that implements the interface of the above EvaluationResult
         axes (matplotlib.Axes): axes object used to chain this plot
@@ -1166,6 +1295,14 @@ def plot_magnitude_test(evaluation_result, axes=None, show=True,
         ax (matplotlib.Axes): containing the new plot
 
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_magnitude_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_test_distribution' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
+
     plot_args = plot_args or {}
     title = plot_args.get('title', 'Magnitude Test')
     title_fontsize = plot_args.get('title_fontsize', None)
@@ -1244,6 +1381,9 @@ def plot_distribution_test(evaluation_result, axes=None, show=True,
     Takes result from evaluation and generates a specific histogram plot to show the results of the statistical evaluation
     for the M-test.
 
+    .. deprecated:: 0.7.0
+       This function is deprecated and will be removed in version 1.0.
+       Please use :func:`~csep.plots.plot_test_distribution` instead
 
     Args:
         evaluation_result: object-like var that implements the interface of the above EvaluationResult
@@ -1252,6 +1392,13 @@ def plot_distribution_test(evaluation_result, axes=None, show=True,
         ax (matplotlib.axes.Axes): can be used to modify the figure
 
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_distribution_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_test_distribution' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     # handle plotting
     if axes:
@@ -1309,6 +1456,10 @@ def plot_likelihood_test(evaluation_result, axes=None, show=True,
     Takes result from evaluation and generates a specific histogram plot to show the results of the statistical evaluation
     for the L-test.
 
+        .. deprecated:: 0.7.0
+           This function is deprecated and will be removed in version 1.0.
+           Please use :func:`~csep.plots.plot_test_distribution` instead.
+
     Args:
         evaluation_result: object-like var that implements the interface of the above EvaluationResult
         axes (matplotlib.Axes): axes object used to chain this plot
@@ -1332,6 +1483,13 @@ def plot_likelihood_test(evaluation_result, axes=None, show=True,
     Returns:
         ax (matplotlib.axes.Axes): can be used to modify the figure
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_likelihood_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_test_distribution' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.utils.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     title = plot_args.get('title', 'Pseudo-likelihood Test')
     title_fontsize = plot_args.get('title_fontsize', None)
@@ -1405,6 +1563,11 @@ def plot_spatial_test(evaluation_result, axes=None, plot_args=None, show=True):
     """
     Plot spatial test result from catalog based forecast
 
+    .. deprecated:: 0.7.0
+        This function is deprecated and will be removed in version 1.0.
+        Please use :func:`~csep.plots.plot_test_distribution` instead
+
+
     Args:
         evaluation_result: object-like var that implements the interface of the above EvaluationResult
         axes (matplotlib.Axes): axes object used to chain this plot
@@ -1428,7 +1591,13 @@ def plot_spatial_test(evaluation_result, axes=None, plot_args=None, show=True):
     Returns:
         ax (matplotlib.axes.Axes): can be used to modify the figure
     """
-
+    warnings.warn(
+        "'csep.utils.plots.plot_spatial_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_test_distribution' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_test_distribution.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     plot_args = plot_args or {}
     title = plot_args.get('title', 'Spatial Test')
     title_fontsize = plot_args.get('title_fontsize', None)
@@ -1503,6 +1672,19 @@ def plot_spatial_test(evaluation_result, axes=None, plot_args=None, show=True):
 
 def plot_calibration_test(evaluation_result, axes=None, plot_args=None,
                           show=False):
+    """
+        .. deprecated:: 0.7.0
+        This function is deprecated and will be removed in version 1.0.
+        Please use :func:`~csep.plots.plot_calibration_test` instead
+
+    """
+    warnings.warn(
+        "'csep.utils.plots.plot_calibration_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_calibration_test' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_calibration_test.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     # set up QQ plots and KS test
     plot_args = plot_args or {}
     n = len(evaluation_result.test_distribution)
@@ -1557,6 +1739,10 @@ def plot_poisson_consistency_test(eval_results, normalize=False,
                                   plot_args=None, show=False):
     """ Plots results from CSEP1 tests following the CSEP1 convention.
 
+        .. deprecated:: 0.7.0
+           This function is deprecated and will be removed in version 1.0.
+          Please use :func:`~csep.utils.plots.plot_consistency_test` instead
+
     Note: All of the evaluations should be from the same type of evaluation, otherwise the results will not be
           comparable on the same figure.
 
@@ -1584,7 +1770,13 @@ def plot_poisson_consistency_test(eval_results, normalize=False,
     Returns:
         ax (:class:`matplotlib.pyplot.axes` object)
     """
-
+    warnings.warn(
+        "'csep.utils.plots.plot_poisson_consistency_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_consistency_test' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_consistency_test.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     try:
         results = list(eval_results)
     except TypeError:
@@ -1703,7 +1895,13 @@ def plot_poisson_consistency_test(eval_results, normalize=False,
 
 def plot_comparison_test(results_t, results_w=None, axes=None, plot_args=None):
     """Plots list of T-Test (and W-Test) Results"""
-
+    warnings.warn(
+        "'csep.utils.plots.plot_comparison_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_comparison_test' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_comparison_test.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     if plot_args is None:
         plot_args = {}
 
@@ -1810,7 +2008,13 @@ def plot_consistency_test(eval_results, normalize=False, axes=None,
     Returns:
         ax (:class:`matplotlib.pyplot.axes` object)
     """
-
+    warnings.warn(
+        "'csep.utils.plots.plot_consistency_test' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_consistency_test' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_consistency_test.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     try:
         results = list(eval_results)
     except TypeError:
@@ -2187,6 +2391,13 @@ def plot_concentration_ROC_diagram(forecast, catalog, linear=True, axes=None, pl
         Written by Han Bao, UCLA, March 2021. Modified June 2021.
         Modified by Emanuele Biondini, University of Bologna, May 2024.
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_concentration_ROC_diagram' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_concentration_ROC_diagram' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_concentration_ROC_diagram.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     if not catalog.region == forecast.region:
         raise RuntimeError(
             "catalog region and forecast region must be identical.")
@@ -2331,6 +2542,13 @@ def plot_ROC_diagram(forecast, catalog, linear=True, axes=None, plot_uniform=Tru
 
         Written by Emanuele Biondini, UNIBO, March 2023.
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_ROC_diagram' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_ROC_diagram' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_ROC_diagram.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     if not catalog.region == forecast.region:
         raise RuntimeError(
             "catalog region and forecast region must be identical.")
@@ -2516,6 +2734,13 @@ def plot_Molchan_diagram(forecast, catalog, linear=True, axes=None, plot_uniform
 
         Written by Emanuele Biondini, UNIBO, March 2023.
     """
+    warnings.warn(
+        "'csep.utils.plots.plot_Molcham_diagram' is deprecated and will be removed in version 1.0.\n"
+        "Use 'csep.plots.plot_Molcham_diagram' instead.\n"
+        "Documentation: https://docs.cseptesting.org/reference/generated/csep.plots.plot_Molcham_diagram.html",
+        DeprecationWarning,
+        stacklevel=2
+    )
     if not catalog.region == forecast.region:
         raise RuntimeError(
             "catalog region and forecast region must be identical.")
