@@ -1,3 +1,22 @@
+# v0.8.0 (30/01/2026)
+
+## Change-log
+* Plot Refactoring by @pabloitu in https://github.com/cseptesting/pycsep/pull/263
+* Upgrade to PEP660 by @pabloitu in https://github.com/cseptesting/pycsep/pull/280
+* Removed scipy.repeats due to function deprecation by @pabloitu in https://github.com/cseptesting/pycsep/pull/285
+* Updated build-test.yml by @pabloitu in https://github.com/cseptesting/pycsep/pull/288
+* Fixed error with matplotlib and tkinter for windows by @pabloitu in https://github.com/cseptesting/pycsep/pull/290
+* Added all regions and catalog queries to the documentation by @pabloitu in https://github.com/cseptesting/pycsep/pull/292
+
+## Credits
+
+Pablo Iturrieta (@pabloitu)
+Toño Bayona (@bayonato89)
+Marcus Herrmann (@mherrmann3)
+Francesco Serafini (@Serra314)
+Bill Savran (@wsavran)
+
+
 # v0.7.0 (4/10/2025)
 
 ## Change-log
